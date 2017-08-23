@@ -19,10 +19,10 @@ var path = require('path');
 
 // see how to use a valid certificate:
 // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
-var options = {
-  key: fs.readFileSync("https://github.com/muaz-khan/RTCMultiConnection/blob/master/fake-keys/certificate.pem"),
-  cert: fs.readFileSync("https://github.com/muaz-khan/RTCMultiConnection/blob/master/fake-keys/privatekey.pem")
-};
+//   var options = {
+//  key: fs.readFileSync("https://github.com/muaz-khan/RTCMultiConnection/blob/master/fake-keys/certificate.pem"),
+//  cert: fs.readFileSync("https://github.com/muaz-khan/RTCMultiConnection/blob/master/fake-keys/privatekey.pem")
+//};
 
 // force auto reboot on failures
 var autoRebootServerOnFailure = false;
@@ -179,11 +179,8 @@ function serverHandler(request, response) {
 
 var app;
 
-if (isUseHTTPs) {
-  app = server.createServer(options, serverHandler);
-} else {
   app = server.createServer(serverHandler);
-}
+
 
 function cmd_exec(cmd, args, cb_stdout, cb_end) {
   var spawn = require('child_process').spawn,
