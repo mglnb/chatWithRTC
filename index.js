@@ -20,8 +20,8 @@ var path = require('path');
 // see how to use a valid certificate:
 // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
 var options = {
-  key: fs.readFileSync(path.join(__dirname, resolveURL('fake-keys/privatekey.pem'))),
-  cert: fs.readFileSync(path.join(__dirname, resolveURL('fake-keys/certificate.pem')))
+  key: fs.readFileSync("https://github.com/muaz-khan/RTCMultiConnection/blob/master/fake-keys/certificate.pem"),
+  cert: fs.readFileSync("https://github.com/muaz-khan/RTCMultiConnection/blob/master/fake-keys/privatekey.pem")
 };
 
 // force auto reboot on failures
