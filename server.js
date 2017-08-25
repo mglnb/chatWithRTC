@@ -24,7 +24,7 @@ var server = http.createServer(function(request, response) {
     response.end();
 });
 
-server.listen(6502, function() {
+server.listen(process.env.PORT || 6502, function() {
     console.log((new Date()) + " Server is listening on port 6502");
 });
 
