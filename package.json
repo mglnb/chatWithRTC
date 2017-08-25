@@ -1,29 +1,21 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.6",
-  "description": "A sample Node.js app using Express 4",
-  "engines": {
-    "node": "6.11.1"
-  },
-  "main": "index.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "socket.io": "^2.0.3"
-  },
-  "devDependencies": {
-    "request": "^2.81.0",
-    "tape": "^4.7.0"
-  },
+  "name": "webrtc-from-chat",
+  "version": "1.2.0",
+  "description": "A simple WebSocket-based chat server with two-way video chat support added",
+  "homepage": "http://mdn-samples.mozilla.org/s/webrtc-from-chat/",
+  "bugs": "https://github.com/mdn/samples-server/issues",
+  "license": "CC0",
+  "author": "Eric Shepherd / Mozilla",
+  "main": "chatserver.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/mdn/samples-server.git"
   },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
-  "license": "MIT"
+  "scripts": {
+    "postinstall": "cp node_modules/webrtc-adapter/out/adapter.js ."
+  },
+  "dependencies": {
+    "websocket": "*",
+    "webrtc-adapter": "^1.1"
+  }
 }
