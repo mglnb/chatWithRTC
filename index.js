@@ -101,7 +101,7 @@ function connect() {
   if (document.location.protocol === "https:") {
     scheme += "s";
   }
-  serverUrl = "https://webrtcmgl.herokuapp.com/";
+  serverUrl = "https://webrtcmgl.herokuapp.com:6502";
 
   connection = new WebSocket(serverUrl, "json");
 
