@@ -32,7 +32,7 @@ server.listen(process.env.PORT || 6502, function () {
 // Create the WebSocket server by converting the HTTPS server into one.
 
 var wsServer = new WebSocketServer({
-  httpServer: httpsServer,
+  httpServer: server,
   autoAcceptConnections: false
 });
 
