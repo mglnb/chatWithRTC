@@ -1,0 +1,122 @@
+video {
+    width: 50px;
+    opacity: 0.5;
+}
+
+body {
+    background: rgba(223, 223, 223, 0.54)
+}
+
+#chatbox {
+    width: 100%;
+    border: none;
+    background: rgba(225, 225, 225, 0.89);
+    height: 250px
+}
+
+#camera-container {
+    display: block;
+    position: relative;
+    overflow: auto;
+    background: rgba(223, 223, 223, 0.50);
+    min-height: 250px;
+}
+
+
+
+.username {
+    margin-top: 50px;
+}
+
+.username input[type=text] {
+    width: 30%;
+}
+
+
+/* The main incoming video box */
+
+#received_video {
+    width: 100%;
+}
+
+
+/* The small "preview" view of your camera */
+
+#local_video {
+    width: 120px;
+    height: 90px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: rgba(223, 223, 223, 1);
+}
+
+#hangup-button {
+    right: 15px;
+    position: absolute;
+    top: 215px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    color: white;
+    background: rgb(247, 34, 54);
+    border-radius: 50%;
+    border: none;
+}
+
+#hangup-button:disabled {
+    display: none;
+}
+
+#send {
+    width: 30px;
+    height: 30px;
+    padding-left: 8px;
+    color: white;
+    font-size: 10px;
+    background: #5D5DFE;
+    border-radius: 50%;
+    position: absolute;
+    right: 35px;
+    top: 5px;
+}
+
+#text {
+    width: 95%;
+    margin: 0;
+    padding: 7.5px
+}
+
+#control-row {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+#text:disabled {
+    margin: 0;
+    opacity: .5;
+    cursor: not-allowed;
+    padding: 7.5px
+}
+
+#userlist-container {
+    min-height: 150px;
+    background: rgba(223, 223, 223, 1);
+    height: 250px
+}
+
+#userlistbox li {
+    list-style: none;
+    font-size: 16px;
+    font-style: bold;
+    cursor: pointer;
+    transition: .2s
+}
+
+#userlistbox li:hover {
+    color: rgb(21, 134, 21);
+}
+.title-users {
+    margin-top: 10px;
+    text-align: center;
+}

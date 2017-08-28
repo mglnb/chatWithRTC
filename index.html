@@ -12,58 +12,59 @@
 -->
 
 <html>
+
 <head>
-  <title>WebSocket Chat Demo with WebRTC Calling</title>
+  <title>Chat/Video WebRTC Test</title>
   <meta charset="utf-8">
-  <link href="chat.css" rel="stylesheet">
-  <link href="../shared.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+  <link href="css/chat.css" rel="stylesheet">
   <script type="text/javascript" src="index.js"></script>
   <script src="adapter.js"></script>
-  <style>
-  video {
-    width: 50px;
-    opacity: 0.5;
-  }
-  </style>
 </head>
+
 <body>
+  <div class="container">
+    <div class="row">
+      <div class="username">
+        <p>Digite seu usuário: <input id="name" type="text" maxlength="12" required autocomplete="username" inputmode="verbatim"
+            placeholder="Username">
+          <input type="button" name="login" value="Login" onclick="connect()"></p>
+      </div>
+    </div>
+  </div>
 
-  <p>Enter a username: <input id="name" type="text" maxlength="12" required
-      autocomplete="username" inputmode="verbatim" placeholder="Username">
-  <input type="button" name="login" value="Log in" onclick="connect()"></p>
-
-  <div id="container" class="flexChild columnParent">
-    <div class="flexChild rowParent">
-      <div class="flexChild rowParent">
-        <div class="flexChild" id="userlist-container">
-          <ul id="userlistbox"></ul>
-        </div>
-        <div class="flexChild" id="chat-container">
+  <div class="container">
+    <div class="row">
+      <div id="userlist-container" class="col-sm-2">
+        <h3 class="title-users">Usuários</h3>
+        <ul id="userlistbox"></ul>
+      </div>
+      <div id="chat-container" class="col-sm-6">
+        <div>
           <iframe id="chatbox"></iframe>
         </div>
       </div>
 
-      <div class="flexChild" id="camera-container">
-        <div class="camera-box">
-          <video id="received_video" autoplay></video>
-          <video id="local_video" autoplay muted></video>
-          <button id="hangup-button" onclick="hangUpCall();" disabled>
-            Hang Up
+      <div id="camera-container" class="col-sm-4">
+        <video id="received_video" autoplay></video>
+        <video id="local_video" autoplay muted></video>
+        <button id="hangup-button" onclick="hangUpCall();" class=" glyphicon glyphicon-earphone" disabled>
           </button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div id="control-row" class="col-sm-offset-2 col-sm-6">
+          <div id="empty-container"></div>
+          <div id="chat-controls-container">
+            <input id="text" type="text" name="text" maxlength="256" placeholder="Chat with us!" autocomplete="off" onkeyup="handleKey(event)"
+              disabled>
+            <button  id="send" name="send" class="btn " onclick="handleSendButton()" disabled> <span class="glyphicon glyphicon-send"></span>   </button>            </div>
         </div>
       </div>
     </div>
 
-    <div class="flexChild rowParent" id="control-row">
-      <div class="flexChild" id="empty-container"></div>
-      <div class="flexChild" id="chat-controls-container">
-        Chat: <input id="text" type="text" name="text" size="80" maxlength="256"
-          placeholder="Chat with us!" autocomplete="off" onkeyup="handleKey(event)"
-          disabled>
-        <input type="button" id="send" name="send" value="Send"
-          onclick="handleSendButton()" disabled>
-      </div>
-    </div>
-  </div>
+
 </body>
+
 </html>
