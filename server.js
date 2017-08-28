@@ -139,7 +139,7 @@ wsServer.on('request', function (request) {
 
       if (sendToClients) {
         var msgString = JSON.stringify(msg);
-        var i;
+        var i; 
 
         // If the message specifies a target username, only send the
         // message to them. Otherwise, send it to every user.
