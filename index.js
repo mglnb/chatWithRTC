@@ -229,9 +229,6 @@ function createPeerConnection() {
 
   // servidores STUN/TURN para uso de testes.
 
-  function createPeerConnection() {
-    log("Setting up a connection...");
-
     // servidores STUN/TURN para uso de testes.
     var servers = {
       'iceServers': [{
@@ -317,10 +314,9 @@ function createPeerConnection() {
           RtpDataChannels: true
         }
       ]
-    }
+    };
     myPeerConnection = new RTCPeerConnection(servers, options);
-    
-  }
+  
 
     // Existe addTrack()? Caso não, iremos usar streams.
     hasAddTrack = (myPeerConnection.addTrack !== undefined);
