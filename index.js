@@ -318,8 +318,9 @@ function createPeerConnection() {
         }
       ]
     }
-  }
     myPeerConnection = new RTCPeerConnection(servers, options);
+    
+  }
 
     // Existe addTrack()? Caso não, iremos usar streams.
     hasAddTrack = (myPeerConnection.addTrack !== undefined);
