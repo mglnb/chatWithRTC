@@ -15,11 +15,7 @@ var clientID = 0;
 // Mas tambem podemos especificar outros parametros para recuperar o video em outras
 // resolucoes. E em dispositivos mobiles podemos especificar qual camera o usuario
 // deseja usar.
-//
-// See also:
-// https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamConstraints
-// https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-//
+
 
 var mediaConstraints = {
   audio: true, // Usaremos comunicacao de audio
@@ -225,530 +221,504 @@ function handleKey(evt) {
  * recebendo getUserMedia() para achar a camera e o microfone e adicionar a conexão de video conferencia
  */
 function createPeerConnection() {
-  log("Setting up a connection...");
+  log("Configurando conexão...");
 
   // servidores STUN/TURN para uso de testes.
 
-    // servidores STUN/TURN para uso de testes.
-    var servers = {
-      'iceServers': [{
-          urls: 'stun:stun01.sipphone.com'
-        },
-        {
-          urls: 'stun:stun.ekiga.net'
-        },
-        {
-          urls: 'stun:stun.fwdnet.net'
-        },
-        {
-          urls: 'stun:stun.ideasip.com'
-        },
-        {
-          urls: 'stun:stun.iptel.org'
-        },
-        {
-          urls: 'stun:stun.rixtelecom.se'
-        },
-        {
-          urls: 'stun:stun.schlund.de'
-        },
-        {
-          urls: 'stun:stun.l.google.com:19302'
-        },
-        {
-          urls: 'stun:stun1.l.google.com:19302'
-        },
-        {
-          urls: 'stun:stun2.l.google.com:19302'
-        },
-        {
-          urls: 'stun:stun3.l.google.com:19302'
-        },
-        {
-          urls: 'stun:stun4.l.google.com:19302'
-        },
-        {
-          urls: 'stun:stunserver.org'
-        },
-        {
-          urls: 'stun:stun.softjoys.com'
-        },
-        {
-          urls: 'stun:stun.voiparound.com'
-        },
-        {
-          urls: 'stun:stun.voipbuster.com'
-        },
-        {
-          urls: 'stun:stun.voipstunt.com'
-        },
-        {
-          urls: 'stun:stun.voxgratia.org'
-        },
-        {
-          urls: 'stun:stun.xten.com'
-        },
-        {
-          urls: 'turn:numb.viagenie.ca',
-          credential: 'muazkh',
-          username: 'webrtc@live.com'
-        },
-        {
-          urls: 'turn:192.158.29.39:3478?transport=udp',
-          credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-          username: '28224511:1379330808'
-        },
-        {
-          urls: 'turn:192.158.29.39:3478?transport=tcp',
-          credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-          username: '28224511:1379330808'
-        }
-      ]
-    };
+  myPeerConnection = new RTCPeerConnection({
+    'iceServers': [{
+        urls: 'stun:stun01.sipphone.com'
+      },
+      {
+        urls: 'stun:stun.ekiga.net'
+      },
+      {
+        urls: 'stun:stun.fwdnet.net'
+      },
+      {
+        urls: 'stun:stun.ideasip.com'
+      },
+      {
+        urls: 'stun:stun.iptel.org'
+      },
+      {
+        urls: 'stun:stun.rixtelecom.se'
+      },
+      {
+        urls: 'stun:stun.schlund.de'
+      },
+      {
+        urls: 'stun:stun.l.google.com:19302'
+      },
+      {
+        urls: 'stun:stun1.l.google.com:19302'
+      },
+      {
+        urls: 'stun:stun2.l.google.com:19302'
+      },
+      {
+        urls: 'stun:stun3.l.google.com:19302'
+      },
+      {
+        urls: 'stun:stun4.l.google.com:19302'
+      },
+      {
+        urls: 'stun:stunserver.org'
+      },
+      {
+        urls: 'stun:stun.softjoys.com'
+      },
+      {
+        urls: 'stun:stun.voiparound.com'
+      },
+      {
+        urls: 'stun:stun.voipbuster.com'
+      },
+      {
+        urls: 'stun:stun.voipstunt.com'
+      },
+      {
+        urls: 'stun:stun.voxgratia.org'
+      },
+      {
+        urls: 'stun:stun.xten.com'
+      },
+      {
+        urls: 'turn:numb.viagenie.ca',
+        credential: 'muazkh',
+        username: 'webrtc@live.com'
+      },
+      {
+        urls: 'turn:192.158.29.39:3478?transport=udp',
+        credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+        username: '28224511:1379330808'
+      },
+      {
+        urls: 'turn:192.158.29.39:3478?transport=tcp',
+        credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+        username: '28224511:1379330808'
+      }
+    ]
+  }, {
+    optional: [{
+        DtlsSrtpKeyAgreement: true
+      },
+      {
+        RtpDataChannels: true
+      }
+    ]
+  });
 
-    var options = {
-      optional: [{
-          DtlsSrtpKeyAgreement: true
-        },
-        {
-          RtpDataChannels: true
-        }
-      ]
-    };
-    myPeerConnection = new RTCPeerConnection(servers, options);
-  
-
-    // Existe addTrack()? Caso não, iremos usar streams.
-    hasAddTrack = (myPeerConnection.addTrack !== undefined);
+  // Existe addTrack()? Caso não, iremos usar streams.
+  hasAddTrack = (myPeerConnection.addTrack !== undefined);
 
 
-    // Atribuindo os handlers para os metodos de negociação do ICE
-    myPeerConnection.onicecandidate = handleICECandidateEvent;
-    myPeerConnection.onnremovestream = handleRemoveStreamEvent;
-    myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
-    myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
-    myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
-    myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
+  // Atribuindo os handlers para os metodos de negociação do ICE
+  myPeerConnection.onicecandidate = handleICECandidateEvent;
+  myPeerConnection.onnremovestream = handleRemoveStreamEvent;
+  myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
+  myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
+  myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
+  myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
 
 
-    // Como addStream() não é mais recomendado para uso, e o evento addTrack() é recente,
-    // Precisamos usar ele caso addTrack() não estiver disponivel
-    if (hasAddTrack) {
-      myPeerConnection.ontrack = handleTrackEvent;
-    } else {
-      myPeerConnection.onaddstream = handleAddStreamEvent;
-    }
+  // Como addStream() não é mais recomendado para uso, e o evento addTrack() é recente,
+  // Precisamos usar ele caso addTrack() não estiver disponivel
+  if (hasAddTrack) {
+    myPeerConnection.ontrack = handleTrackEvent;
+  } else {
+    myPeerConnection.onaddstream = handleAddStreamEvent;
   }
+}
 
-  // Called by the WebRTC layer to let us know when it's time to
-  // begin (or restart) ICE negotiation. Starts by creating a WebRTC
-  // offer, then sets it as the description of our local media
-  // (which configures our local media stream), then sends the
-  // description to the callee as an offer. This is a proposed media
-  // format, codec, resolution, etc.
-  /**
-   * Chamado pelo WebRTC para notificar que é hora de criar, ou reiniciar uma negociação ICE.
-   * Inicia criando uma oferta, então atribui a mesma para a descrição da nossa midia local,
-   * então envia a descrição para o chamado com o valor de uma oferta. Demonstrando o valor da midia,
-   * formato, codec, resolução e etc...
-   */
-  function handleNegotiationNeededEvent() {
-    log("*** Negotiation needed");
+/**
+ * Chamado pelo WebRTC para notificar que é hora de criar, ou reiniciar uma negociação ICE.
+ * Inicia criando uma oferta, então atribui a mesma para a descrição da nossa midia local,
+ * então envia a descrição para o chamado com o valor de uma oferta. Demonstrando o valor da midia,
+ * formato, codec, resolução e etc...
+ */
+function handleNegotiationNeededEvent() {
+  log("*** Negociação necessária");
 
-    log("---> Creating offer");
-    myPeerConnection.createOffer().then(function (offer) {
-        log("---> Creating new description object to send to remote peer");
-        return myPeerConnection.setLocalDescription(offer);
-      })
-      .then(function () {
-        log("---> Sending offer to remote peer");
-        sendToServer({
-          name: myUsername,
-          target: targetUsername,
-          type: "video-offer",
-          sdp: myPeerConnection.localDescription
-        });
-      })
-      .catch(reportError);
-  }
-
-
-  /**
-   * Chamado pelo WebRTC quando um evento ocorre nas midias que estão na conferência do WebRTC
-   * É incluido quando streams são adicionados ou removidos da conferencia;
-   * 
-   * Este evento tem os seguintes campos
-   * @callback event 
-   * @callback RTCRtpReceiver       event.receiver
-   * @callback MediaStreamTrack     event.track
-   * @callback MediaStream[]        event.streams
-   * @callback RTCRtpTransceiver    event.transceiver
-   */
-  function handleTrackEvent(event) {
-    log("*** Stream adicionada");
-    document.getElementById("received_video").srcObject = event.streams[0];
-    document.getElementById("hangup-button").disabled = false;
-  }
-
-  /**
-   * Chamado pelo WebRTC uma chamada é respondida pelo usuário remoto
-   * Podemos usar este evento para atualizar nossa interface 
-   * @callback event 
-   */
-  function handleAddStreamEvent(event) {
-    log("*** Stream adicionado");
-    document.getElementById("received_video").srcObject = event.stream;
-    document.getElementById("hangup-button").disabled = false;
-  }
-
-  /**
-   * Quando alguem finalizar a conexão, este evento é chamado, removendo assim sua mediastream.
-   * @callback event 
-   */
-  function handleRemoveStreamEvent(event) {
-    log("*** Stream removido");
-    closeVideoCall();
-  }
-
-  /**
-   * Cria um novo candidato ICE enviando o mesmo para o server
-   * @callback event 
-   */
-  function handleICECandidateEvent(event) {
-    if (event.candidate) {
-      log("Outgoing ICE candidate: " + event.candidate.candidate);
-
+  log("---> Criando oferta");
+  myPeerConnection.createOffer().then(function (offer) {
+      log("---> Criando descrição para enviar ao usuário remoto");
+      return myPeerConnection.setLocalDescription(offer);
+    })
+    .then(function () {
+      log("---> Enviando oferta para o usuário");
       sendToServer({
-        type: "new-ice-candidate",
+        name: myUsername,
         target: targetUsername,
-        candidate: event.candidate
+        type: "video-offer",
+        sdp: myPeerConnection.localDescription
       });
-    }
-  }
+    })
+    .catch(reportError);
+}
 
-  /**
-   * Esse método é chamado quando o estado do ICE mudar
-   * Caso aconteça algum erro na conexão do ICE a chamada será finalizada
-   * 
-   * @callback event 
-   */
-  function handleICEConnectionStateChangeEvent(event) {
-    log("*** ICE connection state changed to " + myPeerConnection.iceConnectionState);
 
-    switch (myPeerConnection.iceConnectionState) {
-      case "closed":
-      case "failed":
-      case "disconnected":
-        closeVideoCall();
-        break;
-    }
-  }
+/**
+ * Chamado pelo WebRTC quando um evento ocorre nas midias que estão na conferência do WebRTC
+ * É incluido quando streams são adicionados ou removidos da conferencia;
+ * 
+ * Este evento tem os seguintes campos
+ * @callback event 
+ * @callback RTCRtpReceiver       event.receiver
+ * @callback MediaStreamTrack     event.track
+ * @callback MediaStream[]        event.streams
+ * @callback RTCRtpTransceiver    event.transceiver
+ */
+function handleTrackEvent(event) {
+  log("*** Stream adicionado");
+  document.getElementById("received_video").srcObject = event.streams[0];
+  document.getElementById("hangup-button").disabled = false;
+}
 
-  /**
-   * Esse evento irá detectar quando a conexão for fechada.
-   * @callback event 
-   */
-  function handleSignalingStateChangeEvent(event) {
-    log("*** WebRTC signaling state changed to: " + myPeerConnection.signalingState);
-    switch (myPeerConnection.signalingState) {
-      case "closed":
-        closeVideoCall();
-        break;
-    }
-  }
+/**
+ * Chamado pelo WebRTC uma chamada é respondida pelo usuário remoto
+ * Podemos usar este evento para atualizar nossa interface 
+ * @callback event 
+ */
+function handleAddStreamEvent(event) {
+  log("*** Stream adicionado");
+  document.getElementById("received_video").srcObject = event.stream;
+  document.getElementById("hangup-button").disabled = false;
+}
 
-  /**
-   * Detecta quando o ICE estiver reunindo os candidatos.
-   * Estados:
-   * "new" : significa que nenhuma network ocorreu ainda.
-   * "gathering" : significa que está reunindo os candidados,
-   * "complete" : significa que reuniu os candidatos.
-   * 
-   * Esta ferramenta pode ficar alternando entre gathering e complete repetidamente
-   * conforme necessitar e as circunstancias mudar.
-   * @callback event 
-   */
-  function handleICEGatheringStateChangeEvent(event) {
-    log("*** ICE gathering state changed to: " + myPeerConnection.iceGatheringState);
-  }
+/**
+ * Quando alguem finalizar a conexão, este evento é chamado, removendo assim sua mediastream.
+ * @callback event 
+ */
+function handleRemoveStreamEvent(event) {
+  log("*** Stream removido");
+  closeVideoCall();
+}
 
-  // Given a message containing a list of usernames, this function
-  // populates the user list box with those names, making each item
-  // clickable to allow starting a video call.
+/**
+ * Cria um novo candidato ICE enviando o mesmo para o server
+ * @callback event 
+ */
+function handleICECandidateEvent(event) {
+  if (event.candidate) {
+    log("Enviando ICE candidate: " + event.candidate.candidate);
 
-  /**
-   * Manda a mensagem contando a lista de usuários,
-   * Essa função popular a userlistbox com todos os nomes,
-   * fazendo cada um clicavel para iniciar uma chamada de video
-   * @callback msg 
-   */
-  function handleUserlistMsg(msg) {
-    var i;
-
-    var listElem = document.getElementById("userlistbox");
-
-    while (listElem.firstChild) {
-      listElem.removeChild(listElem.firstChild);
-    }
-
-    for (i = 0; i < msg.users.length; i++) {
-      var item = document.createElement("li");
-      item.appendChild(document.createTextNode(msg.users[i]));
-      item.addEventListener("click", invite, false);
-
-      listElem.appendChild(item);
-    }
-  }
-
-  // Close the RTCPeerConnection and reset variables so that the user can
-  // make or receive another call if they wish. This is called both
-  // when the user hangs up, the other user hangs up, or if a connection
-  // failure is detected.
-  /**
-   * Fecha a conexão RTC e reseta todas variaveis para que o usuario possa 
-   * receber outra chamada se desejar.
-   * Esse metodo é chamado se o usuario remoto desligar, o local desligar 
-   * ou acontecer algum erro de conexão
-   */
-  function closeVideoCall() {
-    var remoteVideo = document.getElementById("received_video");
-    var localVideo = document.getElementById("local_video");
-
-    log("Closing the call");
-
-    if (myPeerConnection) {
-      log("--> Closing the peer connection");
-
-      myPeerConnection.onaddstream = null; // Para implementações antigas (Lembre-se, onaddstream não é mais recomendado para uso)
-      myPeerConnection.ontrack = null; // Para novas implementações
-      myPeerConnection.onremovestream = null;
-      myPeerConnection.onnicecandidate = null;
-      myPeerConnection.oniceconnectionstatechange = null;
-      myPeerConnection.onsignalingstatechange = null;
-      myPeerConnection.onicegatheringstatechange = null;
-      myPeerConnection.onnotificationneeded = null;
-
-      // Parar os videos.
-
-      if (remoteVideo.srcObject) {
-        remoteVideo.srcObject.getTracks().forEach(track => track.stop());
-      }
-
-      if (localVideo.srcObject) {
-        localVideo.srcObject.getTracks().forEach(track => track.stop());
-      }
-
-      remoteVideo.src = null;
-      localVideo.src = null;
-
-      // Fechar a conexão
-
-      myPeerConnection.close();
-      myPeerConnection = null;
-    }
-
-    // Desabilitar o button de desligar
-    document.getElementById("hangup-button").disabled = true;
-    targetUsername = null;
-  }
-
-  /**
-   * Detecta quando o usuario remoto desligar a chamada.
-   * @callback msg 
-   */
-  function handleHangUpMsg(msg) {
-    log("*** Received hang up notification from other peer");
-
-    closeVideoCall();
-  }
-
-  // Hang up the call by closing our end of the connection, then
-  // sending a "hang-up" message to the other peer (keep in mind that
-  // the signaling is done on a different connection). This notifies
-  // the other peer that the connection should be terminated and the UI
-  // returned to the "no call in progress" state.
-  /**
-   * Quando é desligada a chamada, envia a mensagem do tipo "hang-up",
-   * para o outro usuário, isso notifica que a outra conexão irá ser desligada
-   * e a interface retornar para tela sem chamada
-   */
-  function hangUpCall() {
-    closeVideoCall();
     sendToServer({
-      name: myUsername,
+      type: "new-ice-candidate",
       target: targetUsername,
-      type: "hang-up"
+      candidate: event.candidate
     });
   }
+}
 
-  /**
-   * Detecta quando é clicado em cima de um usuário, convidando o mesmo para uma chamada
-   * de video.
-   * @callback evt 
-   */
-  function invite(evt) {
-    log("Starting to prepare an invitation");
-    if (myPeerConnection) {
-      alert("Você não pode iniciar outra chamada ao mesmo tempo");
-    } else {
-      var clickedUsername = evt.target.textContent;
+/**
+ * Esse método é chamado quando o estado do ICE mudar
+ * Caso aconteça algum erro na conexão do ICE a chamada será finalizada
+ * 
+ * @callback event 
+ */
+function handleICEConnectionStateChangeEvent(event) {
+  log("*** estado do ICE connection mudado para: " + myPeerConnection.iceConnectionState);
 
-      if (clickedUsername === myUsername) {
-        alert("Acredito que você não pode falar consigo mesmo, isso seria estranho.");
-        return;
-      }
+  switch (myPeerConnection.iceConnectionState) {
+    case "closed":
+    case "failed":
+    case "disconnected":
+      closeVideoCall();
+      break;
+  }
+}
 
-      // Grava o usuario clicado para referencia futura
+/**
+ * Esse evento irá detectar quando a conexão for fechada.
+ * @callback event 
+ */
+function handleSignalingStateChangeEvent(event) {
+  log("*** estado do WebRTC signaling mudado para: " + myPeerConnection.signalingState);
+  switch (myPeerConnection.signalingState) {
+    case "closed":
+      closeVideoCall();
+      break;
+  }
+}
 
-      targetUsername = clickedUsername;
-      log("Inviting user " + targetUsername);
+/**
+ * Detecta quando o ICE estiver reunindo os candidatos.
+ * Estados:
+ * "new" : significa que nenhuma network ocorreu ainda.
+ * "gathering" : significa que está reunindo os candidados,
+ * "complete" : significa que reuniu os candidatos.
+ * 
+ * Esta ferramenta pode ficar alternando entre gathering e complete repetidamente
+ * conforme necessitar e as circunstancias mudar.
+ * @callback event 
+ */
+function handleICEGatheringStateChangeEvent(event) {
+  log("*** estado do ICE gathering mudado para: " + myPeerConnection.iceGatheringState);
+}
 
-      // Chama createPeerConnection() para inicializar a conexão com o usuário
+/**
+ * Manda a mensagem contando a lista de usuários,
+ * Essa função popular a userlistbox com todos os nomes,
+ * fazendo cada um clicavel para iniciar uma chamada de video
+ * @callback msg 
+ */
+function handleUserlistMsg(msg) {
+  var i;
 
-      log("Setting up connection to invite user: " + targetUsername);
-      createPeerConnection();
+  var listElem = document.getElementById("userlistbox");
 
-      // Configura o acesso as midias locais e adiciona a conexão
-      log("Requesting webcam access...");
-
-      navigator.mediaDevices.getUserMedia(mediaConstraints)
-        .then(function (localStream) {
-          log("-- Local video stream obtained");
-          document.getElementById("local_video").src = window.URL.createObjectURL(localStream);
-          document.getElementById("local_video").srcObject = localStream;
-
-          if (hasAddTrack) {
-            log("-- Adding tracks to the RTCPeerConnection");
-            localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
-          } else {
-            log("-- Adding stream to the RTCPeerConnection");
-            myPeerConnection.addStream(localStream);
-          }
-        })
-        .catch(handleGetUserMediaError);
-    }
+  while (listElem.firstChild) {
+    listElem.removeChild(listElem.firstChild);
   }
 
-  // Accept an offer to video chat. We configure our local settings,
-  // create our RTCPeerConnection, get and attach our local camera
-  // stream, then create and send an answer to the caller.
-  /**
-   * Aceita a oferta de video.
-   * Configura as opções locais e cria a conexão local.
-   * Após isso cria e envia uma resposta a quem ligou
-   * @callback msg 
-   */
-  function handleVideoOfferMsg(msg) {
-    var localStream = null;
+  for (i = 0; i < msg.users.length; i++) {
+    var item = document.createElement("li");
+    item.appendChild(document.createTextNode(msg.users[i]));
+    item.addEventListener("click", invite, false);
 
-    targetUsername = msg.name;
+    listElem.appendChild(item);
+  }
+}
+/**
+ * Fecha a conexão RTC e reseta todas variaveis para que o usuario possa 
+ * receber outra chamada se desejar.
+ * Esse metodo é chamado se o usuario remoto desligar, o local desligar 
+ * ou acontecer algum erro de conexão
+ */
+function closeVideoCall() {
+  var remoteVideo = document.getElementById("received_video");
+  var localVideo = document.getElementById("local_video");
 
-    // Chama create PeerConnection para iniciar a conexão
+  log("Desligando a chamada");
 
-    log("Starting to accept invitation from " + targetUsername);
+  if (myPeerConnection) {
+    log("--> Cancelando conexão");
+
+    myPeerConnection.onaddstream = null; // Para implementações antigas (Lembre-se, onaddstream não é mais recomendado para uso)
+    myPeerConnection.ontrack = null; // Para novas implementações
+    myPeerConnection.onremovestream = null;
+    myPeerConnection.onnicecandidate = null;
+    myPeerConnection.oniceconnectionstatechange = null;
+    myPeerConnection.onsignalingstatechange = null;
+    myPeerConnection.onicegatheringstatechange = null;
+    myPeerConnection.onnotificationneeded = null;
+
+    // Parar os videos.
+
+    if (remoteVideo.srcObject) {
+      remoteVideo.srcObject.getTracks().forEach(track => track.stop());
+    }
+
+    if (localVideo.srcObject) {
+      localVideo.srcObject.getTracks().forEach(track => track.stop());
+    }
+
+    remoteVideo.srcObject = null;
+    localVideo.srcObject = null;
+
+
+    
+    // Fechar a conexão
+
+    myPeerConnection.close();
+    myPeerConnection = null;
+  }
+
+  // Desabilitar o button de desligar
+  document.getElementById("hangup-button").disabled = true;
+  targetUsername = null;
+}
+
+/**
+ * Detecta quando o usuario remoto desligar a chamada.
+ * @callback msg 
+ */
+function handleHangUpMsg(msg) {
+  log("*** Recebido uma mensagem de hangup do outro usuário");
+
+  closeVideoCall();
+}
+
+/**
+ * Quando é desligada a chamada, envia a mensagem do tipo "hang-up",
+ * para o outro usuário, isso notifica que a outra conexão irá ser desligada
+ * e a interface retornar para tela sem chamada
+ */
+function hangUpCall() {
+  closeVideoCall();
+  sendToServer({
+    name: myUsername,
+    target: targetUsername,
+    type: "hang-up"
+  });
+}
+
+/**
+ * Detecta quando é clicado em cima de um usuário, convidando o mesmo para uma chamada
+ * de video.
+ * @callback evt 
+ */
+function invite(evt) {
+  log("Preparando o convite");
+  if (myPeerConnection) {
+    alert("Você não pode iniciar outra chamada ao mesmo tempo");
+  } else {
+    var clickedUsername = evt.target.textContent;
+
+    if (clickedUsername === myUsername) {
+      alert("Acredito que você não pode falar consigo mesmo, isso seria estranho.");
+      return;
+    }
+
+    // Grava o usuario clicado para referencia futura
+
+    targetUsername = clickedUsername;
+    log("Convidando usuário: " + targetUsername);
+
+    // Chama createPeerConnection() para inicializar a conexão com o usuário
+
+    log("Configurando conexão para conectar com: " + targetUsername);
     createPeerConnection();
 
-    // Precisamos atribuir nossa descrição remota para a oferta SDP recebida.
-    // Então nosso WebRTC sabe como se comunicar com quem enviou a oferta
-    var desc = new RTCSessionDescription(msg.sdp);
+    // Configura o acesso as midias locais e adiciona a conexão
+    log("Solicitando acesso a webcam...");
 
-    myPeerConnection.setRemoteDescription(desc).then(function () {
-        log("Setting up the local media stream...");
-        return navigator.mediaDevices.getUserMedia(mediaConstraints);
-      })
-      .then(function (stream) {
-        log("-- Local video stream obtained");
-        localStream = stream;
+    navigator.mediaDevices.getUserMedia(mediaConstraints)
+      .then(function (localStream) {
+        log("-- Vídeo local obtido");
         document.getElementById("local_video").src = window.URL.createObjectURL(localStream);
         document.getElementById("local_video").srcObject = localStream;
 
         if (hasAddTrack) {
-          log("-- Adding tracks to the RTCPeerConnection");
-          localStream.getTracks().forEach(track =>
-            myPeerConnection.addTrack(track, localStream)
-          );
+          log("-- Adicionado tracks ao PeerConnection");
+          localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
         } else {
-          log("-- Adding stream to the RTCPeerConnection");
+          log("-- Adicionado transmissão ao PeerConnection");
           myPeerConnection.addStream(localStream);
         }
       })
-      .then(function () {
-        log("------> Creating answer");
-        // Agora que conseguimos criar uma descrição remota, precisamos iniciar 
-        // a chamada local e então criar uma resposta SDP.
-        // esses dados SDP descreve as informações da chamada, incluindo o codec,
-        // e informações adicionais.
-        return myPeerConnection.createAnswer();
-      })
-      .then(function (answer) {
-        log("------> Setting local description after creating answer");
-        // Tendo a resposta, estabilizamos como uma descrição local.
-        // Isso configura o fim para que utilizaremos a chamada
-        // especificado nas configurações do SDP
-        return myPeerConnection.setLocalDescription(answer);
-      })
-      .then(function () {
-        var msg = {
-          name: myUsername,
-          target: targetUsername,
-          type: "video-answer",
-          sdp: myPeerConnection.localDescription
-        };
-
-        // Nós configuramos o fim da chamada agora. 
-        // Enviamos de volta para quem ligou para que ele saiba que queremos 
-        // nos comunicar e como comunicaremos
-        log("Sending answer packet back to other peer");
-        sendToServer(msg);
-      })
       .catch(handleGetUserMediaError);
   }
+}
 
-  // Responde a mensagem do tipo "video-answer" enviada para quem ligou
-  // uma vez que chamada ela decide aceitar ou rejeitar a falar
-  function handleVideoAnswerMsg(msg) {
-    log("O usuário aceitou sua chamada");
+/**
+ * Aceita a oferta de video.
+ * Configura as opções locais e cria a conexão local.
+ * Após isso cria e envia uma resposta a quem ligou
+ * @callback msg 
+ */
+function handleVideoOfferMsg(msg) {
+  var localStream = null;
 
-    // Configura a descrição remota, que contem em nossa mensagem "video-answer"
-    var desc = new RTCSessionDescription(msg.sdp);
-    myPeerConnection.setRemoteDescription(desc).catch(reportError);
+  targetUsername = msg.name;
+
+  // Chama create PeerConnection para iniciar a conexão
+
+  log("Aceitando convite de: " + targetUsername);
+  createPeerConnection();
+
+  // Precisamos atribuir nossa descrição remota para a oferta SDP recebida.
+  // Então nosso WebRTC sabe como se comunicar com quem enviou a oferta
+  var desc = new RTCSessionDescription(msg.sdp);
+
+  myPeerConnection.setRemoteDescription(desc).then(function () {
+      log("Configurando midias locais.");
+      return navigator.mediaDevices.getUserMedia(mediaConstraints);
+    })
+    .then(function (stream) {
+      log("-- Vídeo local obtido");
+      localStream = stream;
+      document.getElementById("local_video").src = window.URL.createObjectURL(localStream);
+      document.getElementById("local_video").srcObject = localStream;
+
+      if (hasAddTrack) {
+        log("-- Adicionado tracks ao PeerConnection");
+        localStream.getTracks().forEach(track =>
+          myPeerConnection.addTrack(track, localStream)
+        );
+      } else {
+        log("-- Adicionado transmissão ao PeerConnection");
+        myPeerConnection.addStream(localStream);
+      }
+    })
+    .then(function () {
+      log("--> Criando Resposta");
+      // Agora que conseguimos criar uma descrição remota, precisamos iniciar 
+      // a chamada local e então criar uma resposta SDP.
+      // esses dados SDP descreve as informações da chamada, incluindo o codec,
+      // e informações adicionais.
+      return myPeerConnection.createAnswer();
+    })
+    .then(function (answer) {
+      log("--> Atribuindo descrição local para resposta");
+      // Tendo a resposta, estabilizamos como uma descrição local.
+      // Isso configura o fim para que utilizaremos a chamada
+      // especificado nas configurações do SDP
+      return myPeerConnection.setLocalDescription(answer);
+    }) 
+    .then(function () {
+      var msg = {
+        name: myUsername,
+        target: targetUsername,
+        type: "video-answer",
+        sdp: myPeerConnection.localDescription
+      };
+
+      // Nós configuramos o fim da chamada agora. 
+      // Enviamos de volta para quem ligou para que ele saiba que queremos 
+      // nos comunicar e como comunicaremos
+      log("Enviando o pacote de volta ao outro usuário");
+      sendToServer(msg);
+    })
+    .catch(handleGetUserMediaError);
+}
+
+// Responde a mensagem do tipo "video-answer" enviada para quem ligou
+// uma vez que chamada ela decide aceitar ou rejeitar a falar
+function handleVideoAnswerMsg(msg) {
+  log("O usuário aceitou sua chamada");
+
+  // Configura a descrição remota, que contem em nossa mensagem "video-answer"
+  var desc = new RTCSessionDescription(msg.sdp);
+  myPeerConnection.setRemoteDescription(desc).catch(reportError);
+}
+
+// Cria um novo candidato ICE enviado da outra conexão.
+// Chama RTCPeerConnection.addIceCandidate() para enviar ao ICE framework local.
+function handleNewICECandidateMsg(msg) {
+  var candidate = new RTCIceCandidate(msg.candidate);
+
+  log("Adicionando candidado ICE recebido: " + JSON.stringify(candidate));
+  myPeerConnection.addIceCandidate(candidate)
+    .catch(reportError);
+}
+
+/**
+ * Detecta erro que ocorre quanto tenta acessar as midias locais de video e audio
+ * trata excessoes emitidas pelo getUserMedia().
+ * @callback e 
+ */
+function handleGetUserMediaError(e) {
+  log(e);
+  switch (e.name) {
+    case "NotFoundError":
+      alert("Não foi possível realizar a ligação pois sua webcam e/ou microfone não está disponível");
+      break;
+    case "SecurityError":
+    case "PermissionDeniedError":
+      // Não faça nada, pois é os mesmos quando o usuário desliga a chamada
+      break;
+    default:
+      alert("Erro ao tentar abrir sua webcam e/ou microfone: " + e.message);
+      break;
   }
 
-  // Cria um novo candidato ICE enviado da outra conexão.
-  // Chama RTCPeerConnection.addIceCandidate() para enviar ao ICE framework local.
-  function handleNewICECandidateMsg(msg) {
-    var candidate = new RTCIceCandidate(msg.candidate);
+  // Tenha certeza de fechar a chamada para que outra possa ocorrer
+  closeVideoCall();
+}
 
-    log("Adding received ICE candidate: " + JSON.stringify(candidate));
-    myPeerConnection.addIceCandidate(candidate)
-      .catch(reportError);
-  }
-
-  /**
-   * Detecta erro que ocorre quanto tenta acessar as midias locais de video e audio
-   * trata excessoes emitidas pelo getUserMedia().
-   * @callback e 
-   */
-  function handleGetUserMediaError(e) {
-    log(e);
-    switch (e.name) {
-      case "NotFoundError":
-        alert("Não foi possível realizar a ligação pois sua webcam e/ou microfone não está disponível");
-        break;
-      case "SecurityError":
-      case "PermissionDeniedError":
-        // Não faça nada, pois é os mesmos quando o usuário desliga a chamada
-        break;
-      default:
-        alert("Erro ao tentar abrir sua webcam e/ou microfone: " + e.message);
-        break;
-    }
-
-    // Tenha certeza de fechar a chamada para que outra possa ocorrer
-    closeVideoCall();
-  }
-
-  // Detecta erros de report.
-  function reportError(errMessage) {
-    log_error("Error " + errMessage.name + ": " + errMessage.message);
-  }
+// Detecta erros de report.
+function reportError(errMessage) {
+  log_error("Error " + errMessage.name + ": " + errMessage.message);
+}
