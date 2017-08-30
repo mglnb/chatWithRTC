@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
 #local_video:not([src]) {
     display: none;
 }
@@ -11,6 +13,7 @@ input#login {
 
 * {
     border-radius: 20px;
+    font-family: 'Raleway', sans-serif;
 }
 input {
     border: 2px solid transparent;
@@ -60,7 +63,7 @@ body {
 
 #received_video {
     width: 100%;
-    filter: blur(10px);
+
 }
 
 
@@ -158,4 +161,8 @@ body {
 .title-users {
     margin-top: 10px;
     text-align: center;
+}
+
+.msg {
+    font-size: 50px;
 }

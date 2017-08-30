@@ -141,17 +141,17 @@ function connect() {
         break;
 
       case "username":
-        text = "<b>Usuário <em>" + msg.name + "</em> fez login em: " + timeStr + "</b><br>";
+        text = "<div style='font-family: sans-serif; padding: 5px; font-size: 16px; letter-spacing: 1.1px; color: rgba(50,50,50,.8)'><b>Usuário <em>" + msg.name + "</em> fez login em: " + timeStr + "</b><br></div>";
         break;
 
       case "message":
-        text = "<div class='msg'>(" + timeStr + ") <b>" + msg.name + "</b>: " + msg.text + "</div>";
+        text = "<div style='font-family: sans-serif; padding: 5px; font-size: 16px; letter-spacing: 1.1px; color: rgba(50,50,50,.8)'>(" + timeStr + ") <b>" + msg.name + "</b>: " + msg.text + "</div>";
         break;
 
       case "rejectusername":
         myUsername = msg.name;
-        text = "<b>Seu usuário foi modificado para <em>" + myUsername +
-          "</em> porque o nome que você escolhe está em uso</b><br>";
+        text = "<div style='font-family: sans-serif; padding: 5px; font-size: 16px; letter-spacing: 1.1px; color: rgba(50,50,50,.8)'><b>Seu usuário foi modificado para <em>" + myUsername +
+          "</em> porque o nome que você escolhe está em uso</b><br> </div>";
         break;
 
       case "userlist": // Quando for atualizado a userlist este case será chamado
