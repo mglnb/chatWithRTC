@@ -516,6 +516,7 @@ function closeVideoCall() {
 
     remoteVideo.srcObject = null;
     localVideo.srcObject = null;
+    localVideo.removeAttribute("src");
 
 
     
