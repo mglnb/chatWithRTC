@@ -226,78 +226,16 @@ function createPeerConnection() {
   // servidores STUN/TURN para uso de testes.
 
   myPeerConnection = new RTCPeerConnection({
-    'iceServers': [{
-        urls: 'stun:stun01.sipphone.com'
+    'iceServers': [
+      {urls: ["turn:173.194.72.127:19305?transport=udp",
+         "turn:[2404:6800:4008:C01::7F]:19305?transport=udp",
+         "turn:173.194.72.127:443?transport=tcp",
+         "turn:[2404:6800:4008:C01::7F]:443?transport=tcp"
+         ],
+       username:"CKjCuLwFEgahxNRjuTAYzc/s6OMT",
+       credential:"u1SQDR/SQsPQIxXNWQT7czc/G4c="
       },
-      {
-        urls: 'stun:stun.ekiga.net'
-      },
-      {
-        urls: 'stun:stun.fwdnet.net'
-      },
-      {
-        urls: 'stun:stun.ideasip.com'
-      },
-      {
-        urls: 'stun:stun.iptel.org'
-      },
-      {
-        urls: 'stun:stun.rixtelecom.se'
-      },
-      {
-        urls: 'stun:stun.schlund.de'
-      },
-      {
-        urls: 'stun:stun.l.google.com:19302'
-      },
-      {
-        urls: 'stun:stun1.l.google.com:19302'
-      },
-      {
-        urls: 'stun:stun2.l.google.com:19302'
-      },
-      {
-        urls: 'stun:stun3.l.google.com:19302'
-      },
-      {
-        urls: 'stun:stun4.l.google.com:19302'
-      },
-      {
-        urls: 'stun:stunserver.org'
-      },
-      {
-        urls: 'stun:stun.softjoys.com'
-      },
-      {
-        urls: 'stun:stun.voiparound.com'
-      },
-      {
-        urls: 'stun:stun.voipbuster.com'
-      },
-      {
-        urls: 'stun:stun.voipstunt.com'
-      },
-      {
-        urls: 'stun:stun.voxgratia.org'
-      },
-      {
-        urls: 'stun:stun.xten.com'
-      },
-      {
-        urls: 'turn:numb.viagenie.ca',
-        credential: 'muazkh',
-        username: 'webrtc@live.com'
-      },
-      {
-        urls: 'turn:192.158.29.39:3478?transport=udp',
-        credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-        username: '28224511:1379330808'
-      },
-      {
-        urls: 'turn:192.158.29.39:3478?transport=tcp',
-        credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-        username: '28224511:1379330808'
-      }
+      {urls:["stun:stun.l.google.com:19302"]}
     ]
   }, {
     optional: [{
@@ -519,7 +457,7 @@ function closeVideoCall() {
     localVideo.removeAttribute("src");
 
 
-    
+
     // Fechar a conexão
 
     myPeerConnection.close();
@@ -632,12 +570,10 @@ function handleVideoOfferMsg(msg) {
       localStream = stream;
       document.getElementById("local_video").src = window.URL.createObjectURL(localStream);
       document.getElementById("local_video").srcObject = localStream;
-
+      
       if (hasAddTrack) {
         log("-- Adicionado tracks ao PeerConnection");
-        localStream.getTracks().forEach(track =>
-          myPeerConnection.addTrack(track, localStream)
-        );
+        localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
       } else {
         log("-- Adicionado transmissão ao PeerConnection");
         myPeerConnection.addStream(localStream);
@@ -657,7 +593,7 @@ function handleVideoOfferMsg(msg) {
       // Isso configura o fim para que utilizaremos a chamada
       // especificado nas configurações do SDP
       return myPeerConnection.setLocalDescription(answer);
-    }) 
+    })
     .then(function () {
       var msg = {
         name: myUsername,
