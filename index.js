@@ -38,7 +38,6 @@ var hasAddTrack = false;
  */
 function log(text) {
   var time = new Date();
-
   console.log("[" + time.toLocaleTimeString() + "] " + text);
 }
 
@@ -48,14 +47,13 @@ function log(text) {
  */
 function log_error(text) {
   var time = new Date();
-
   console.error("[" + time.toLocaleTimeString() + "] " + text);
 }
 
 /**
  * Manda para o server um Objeto javascript convertendo em JSON 
  * com os valores: tipo de mensagem e a mensagem
- * @param {string} msg 
+ * @param {Object} msg 
  */
 function sendToServer(msg) {
   var msgJSON = JSON.stringify(msg);
@@ -86,9 +84,6 @@ function setUsername() {
 function connect() {
   var serverUrl;
   var scheme = "ws";
-
-  // If this is an HTTPS connection, we have to use a secure WebSocket
-  // connection too, so add another "s" to the scheme.
 
   /**
    * Se for uma conexao HTTPS, estaremos seguro a usar WebSocket,
@@ -250,7 +245,7 @@ function createPeerConnection() {
 
   // Atribuindo os handlers para os metodos de negociação do ICE
   myPeerConnection.onicecandidate = handleICECandidateEvent;
-  myPeerConnection.onnremovestream = handleRemoveStreamEvent;
+  myPeerConnection.onremovestream = handleRemoveStreamEvent;
   myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
   myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
   myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
@@ -372,8 +367,8 @@ function handleSignalingStateChangeEvent(event) {
   log("*** estado do WebRTC signaling mudado para: " + myPeerConnection.signalingState);
   switch (myPeerConnection.signalingState) {
     case "have-local-offer":
-    isOfferer = true;
-    break;
+      isOfferer = true;
+      break;
     case "closed":
       closeVideoCall();
       break;
@@ -455,11 +450,11 @@ function closeVideoCall() {
     remoteVideo.srcObject = null;
     localVideo.srcObject = null;
     localVideo.removeAttribute("src");
+    isOfferer = false;
 
 
 
     // Fechar a conexão
-
     myPeerConnection.close();
     myPeerConnection = null;
   }
@@ -558,64 +553,60 @@ function handleVideoOfferMsg(msg) {
 
   // Precisamos atribuir nossa descrição remota para a oferta SDP recebida.
   // Então nosso WebRTC sabe como se comunicar com quem enviou a oferta
-  
- if(!isOfferer) {
-   var desc = new RTCSessionDescription(msg.sdp);
-  myPeerConnection.setRemoteDescription(desc)
-    .then(function () {
-      console.log("AAAAAAAAAA2", myPeerConnection.remoteDescription);
-      log("Configurando midias locais.");
-      debugger
-      return navigator.mediaDevices.getUserMedia(mediaConstraints);
-    })
-    .then(function (stream) {
-      log("-- Vídeo local obtido");
-      localStream = stream;
-      document.getElementById("local_video").src = window.URL.createObjectURL(localStream);
-      document.getElementById("local_video").srcObject = localStream;
 
-      if (hasAddTrack) {
-        log("-- Adicionado tracks ao PeerConnection");
-        localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
-      } else {
-        log("-- Adicionado transmissão ao PeerConnection");
-        myPeerConnection.addStream(localStream);
-      }
-    })
-    .then(function () {
-      log("--> Criando Resposta");
-      // Agora que conseguimos criar uma descrição remota, precisamos iniciar 
-      // a chamada local e então criar uma resposta SDP.
-      // esses dados SDP descreve as informações da chamada, incluindo o codec,
-      // e informações adicionais.
-      return myPeerConnection.createAnswer();
-    })
-    .then(function (answer) {
-      log("--> Atribuindo descrição local para resposta");
-      // Tendo a resposta, estabilizamos como uma descrição local.
-      // Isso configura o fim para que utilizaremos a chamada
-      // especificado nas configurações do SDP
-      return myPeerConnection.setLocalDescription(answer);
-    })
-    .then(function () {
-      var msg = {
-        name: myUsername,
-        target: targetUsername,
-        type: "video-answer",
-        sdp: myPeerConnection.localDescription,
-      };
+  if (!isOfferer) {
+    var desc = new RTCSessionDescription(msg.sdp);
+    myPeerConnection.setRemoteDescription(desc)
+      .then(function () {
+        log("Configurando midias locais.");
+        return navigator.mediaDevices.getUserMedia(mediaConstraints);
+      })
+      .then(function (stream) {
+        log("-- Vídeo local obtido");
+        localStream = stream;
+        document.getElementById("local_video").src = window.URL.createObjectURL(localStream);
+        document.getElementById("local_video").srcObject = localStream;
 
-      // Nós configuramos o fim da chamada agora. 
-      // Enviamos de volta para quem ligou para que ele saiba que queremos 
-      // nos comunicar e como comunicaremos
-      log("Enviando o pacote de volta ao outro usuário");
-      sendToServer(msg);
-    })
-    .catch(handleGetUserMediaError);
+        if (hasAddTrack) {
+          log("-- Adicionado tracks ao PeerConnection");
+          localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
+        } else {
+          log("-- Adicionado transmissão ao PeerConnection");
+          myPeerConnection.addStream(localStream);
+        }
+      })
+      .then(function () {
+        log("--> Criando Resposta");
+        // Agora que conseguimos criar uma descrição remota, precisamos iniciar 
+        // a chamada local e então criar uma resposta SDP.
+        // esses dados SDP descreve as informações da chamada, incluindo o codec,
+        // e informações adicionais.
+        return myPeerConnection.createAnswer();
+      })
+      .then(function (answer) {
+        log("--> Atribuindo descrição local para resposta");
+        // Tendo a resposta, estabilizamos como uma descrição local.
+        // Isso configura o fim para que utilizaremos a chamada
+        // especificado nas configurações do SDP
+        return myPeerConnection.setLocalDescription(answer);
+      })
+      .then(function () {
+        var msg = {
+          name: myUsername,
+          target: targetUsername,
+          type: "video-answer",
+          sdp: myPeerConnection.localDescription,
+        };
+
+        // Nós configuramos o fim da chamada agora. 
+        // Enviamos de volta para quem ligou para que ele saiba que queremos 
+        // nos comunicar e como comunicaremos
+        log("Enviando o pacote de volta ao outro usuário");
+        sendToServer(msg);
+      })
+      .catch(handleGetUserMediaError);
   } else {
-    isOfferer = false;    
-
-    debugger
+    isOfferer = false;
   }
 }
 
@@ -625,7 +616,7 @@ function handleVideoOfferMsg(msg) {
 // uma vez que chamada ela decide aceitar ou rejeitar a falar
 function handleVideoAnswerMsg(msg) {
   log("O usuário aceitou sua chamada");
-  debugger
+
   // Configura a descrição remota, que contem em nossa mensagem "video-answer"
   var desc = new RTCSessionDescription(msg.sdp);
   myPeerConnection.setRemoteDescription(desc).catch(reportError);
