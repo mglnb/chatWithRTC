@@ -431,7 +431,7 @@ function closeVideoCall() {
     myPeerConnection.onaddstream = null; // Para implementações antigas (Lembre-se, onaddstream não é mais recomendado para uso)
     myPeerConnection.ontrack = null; // Para novas implementações
     myPeerConnection.onremovestream = null;
-    myPeerConnection.onnicecandidate = null;
+    myPeerConnection.onicecandidate = null;
     myPeerConnection.oniceconnectionstatechange = null;
     myPeerConnection.onsignalingstatechange = null;
     myPeerConnection.onicegatheringstatechange = null;
