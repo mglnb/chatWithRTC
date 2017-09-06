@@ -6,27 +6,26 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
   <link href="css/chat.css" rel="stylesheet">
- <!--  <script src="adapter.js"></script>   -->
+  <script src="adapter.js"></script>
   <script type="text/javascript" src="index.js"></script>
 </head>
 
 <body>
   <div class="container">
-    <div class="row">
-      <div class="username">
+    <div class="row username">
+      <div class="col-xs-6 col-xs-offset-2">
         <p>
           <input id="name" type="text" maxlength="12" required autocomplete="username" inputmode="verbatim" placeholder="Usuário">
           <input id="login" type="button" name="login" value="Login" onclick="connect()">
         </p>
       </div>
     </div>
-  </div>
-
-  <div class="container">
-    <div class="row">
+    <div class="row shadow">
       <div id="userlist-container" class="col-xs-2">
-        <h3 class="title-users">Usuários</h3>
-        <p>Clique para realizar chamada</p>
+        <div class="title">
+          <h3 class="title-users">Usuários</h3>
+          <p>Clique para realizar chamada</p>
+        </div>
         <ul id="userlistbox"></ul>
       </div>
       <div id="chat-container" class="col-xs-6">
@@ -44,19 +43,19 @@
           </button>
       </div>
     </div>
-    <div class="container">
-      <div class="row">
-        <div id="control-row" class="col-xs-offset-2 col-xs-6">
-          <div id="empty-container"></div>
-          <div id="chat-controls-container">
-            <input id="text" type="text" name="text" maxlength="256" placeholder="Sua mensagem" autocomplete="off" onkeyup="handleKey(event)" disabled>
-            <button id="send" name="send" class="btn " onclick="handleSendButton()" disabled> 
+    <div class="row">
+      <div id="control-row" class="col-xs-offset-2 col-xs-6">
+        <div id="empty-container"></div>
+        <div id="chat-controls-container">
+          <input id="text" type="text" name="text" maxlength="256" placeholder="Sua mensagem" autocomplete="off" onkeyup="handleKey(event)"
+            disabled>
+          <button id="send" name="send" class="btn " onclick="handleSendButton()" disabled> 
               <span class="glyphicon glyphicon-send"></span>
             </button>
-          </div>
         </div>
       </div>
     </div>
+  </div>
 
 
 </body>

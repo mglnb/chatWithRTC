@@ -1,74 +1,79 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
-
 #local_video:not([src]) {
     display: none;
+}
+
+.shadow {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 input#login {
     padding-left: 60px;
     margin-left: -50px;
-    z-index: 0; 
+    z-index: 0;
 }
-
 
 * {
- 
     font-family: 'Raleway', sans-serif;
 }
+
 input {
-    border: 2px solid transparent;
+    border: 1px solid rgba(208, 208, 208, 0.50);
     padding: 7.5px 15px;
     position: relative;
     z-index: 1;
-    
 }
 
 input:focus {
-    border: 2px solid rgba(54, 209, 220, 0.49);
-
+    border: 1px solid #5B86E5;
     outline: none;
 }
 
 body {
-    background: #36D1DC;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+    background: #36D1DC;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #5B86E5, #36D1DC);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#chat-container {
+    background: #FFFFFF;
+    border-right: solid rgba(208, 208, 208, 0.50) 1px;
+    border-left: solid rgba(208, 208, 208, 0.50) 1px;
 }
 
 #chatbox {
     width: 100%;
     border: none;
-    background: rgba(225, 225, 225, 0.50);
-    min-height: calc(80vh - 94px);
+    min-height: calc(80vh - 99px);
 }
 
 #camera-container {
     display: block;
     position: relative;
     overflow: auto;
-    background: rgba(223, 223, 223, 0.50);
+    background: #FFFFFF;
     min-height: calc(80vh - 94px);
 }
 
 .username {
     margin-top: 50px;
+    background: #ffffff;
+    border-bottom: solid rgba(208, 208, 208, 0.50) 1px;
+    padding: 10px 0 0 0;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    text-align: center;
 }
 
 .username input[type=text] {
-    width: 30%;
+    width: 85%;
 }
-
-
-/* The main incoming video box */
 
 #received_video {
     width: 100%;
-
 }
-
-
-/* The small "preview" view of your camera */
 
 #local_video {
     width: 120px;
@@ -77,7 +82,6 @@ body {
     top: 10px;
     left: 20px;
     background: rgba(223, 223, 223, 1);
-    
 }
 
 #hangup-button {
@@ -98,22 +102,21 @@ body {
 }
 
 #send {
-    width: 30px;
-    height: 30px;
+    width: 31px;
+    height: 31px;
     padding-left: 8px;
     color: white;
     font-size: 10px;
     background: #5B86E5;
-
     position: absolute;
-    right: 35px;
-    top: 5px;
+    right: 65px;
+    top: 13px;
     z-index: 1;
-
 }
 
 #text {
-    width: 95%;
+    width: 80%;
+    background: #FFFFFF;
 }
 
 #control-row {
@@ -123,47 +126,79 @@ body {
 
 #text:disabled {
     margin: 0;
-    opacity: .5;
+    opacity: .91;
     cursor: not-allowed;
-
 }
 
 #userlist-container {
     min-height: 150px;
-    background: rgba(223, 223, 223, 0.50);
+    background: #FFFFFF;
     min-height: calc(80vh - 94px);
-    color: #fff;
+    color: #BABABA;
     letter-spacing: 2px;
+    padding: 0;
 }
-#userlist-container p{
+
+#userlist-container p {
     text-align: center;
-    
     font-size: 9px;
     letter-spacing: 1px;
 }
 
 #userlistbox {
     margin: 0;
-    padding: 0
+    padding: 0;
 }
+
 #userlistbox li {
     list-style: none;
     font-size: 16px;
     font-style: bold;
+    margin-top: 10px;
     cursor: pointer;
+    padding: 0 15px;
+    
     transition: .2s;
     text-align: left;
+    padding-bottom: 10px;
+    border-bottom: solid rgba(208, 208, 208, 0.50) 1px;
+}
+
+#userlistbox li::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #5B86E5;
+    vertical-align: middle;
+    margin-right: 15px;
 }
 
 #userlistbox li:hover {
     color: #5B86E5;
 }
 
+.title {
+    border-bottom: solid rgba(208, 208, 208, 0.50) 1px;
+    padding: 10px 0 ;
+}
 .title-users {
     margin-top: 10px;
     text-align: center;
 }
 
+
 .msg {
     font-size: 50px;
+}
+
+#chat-controls-container {
+    position: absolute;
+    top: -60px;
+    text-align: center;
+    width: 100%;
+    background: rgba(237, 237, 237, 0.71);
+    padding: 10px 0;
+    border-top: solid rgba(208, 208, 208, 0.50) 1px;
 }
