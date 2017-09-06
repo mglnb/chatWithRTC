@@ -116,7 +116,7 @@ function connect() {
    * @callback evt
    */
   connection.onmessage = function (evt) {
-    var chatFrameDocument = document.getElementById("chatbox").contentDocument;
+    var chatFrameDocument = $('#chatbox');
     var text = "";
     var msg = JSON.parse(evt.data);
     log("Message received: ");
@@ -131,11 +131,18 @@ function connect() {
         break;
 
       case "username":
-        text = "<div style='font-family: sans-serif; padding: 5px; font-size: 16px; letter-spacing: 1.1px; color: rgba(50,50,50,.8)'><b>Usuário <em>" + msg.name + "</em> fez login em: " + timeStr + "</b><br></div>";
+        text = "<div class='textBlock right'><b>Usuário <em>" + msg.name + "</em> fez login em: " + timeStr + "</b><br></div>";
         break;
 
       case "message":
-        text = "<div style='font-family: sans-serif; padding: 5px; font-size: 16px; letter-spacing: 1.1px; color: rgba(50,50,50,.8)'>(" + timeStr + ") <b>" + msg.name + "</b>: " + msg.text + "</div>";
+      if(myUsername == msg.name) {
+        text = "<div class='textBlock right'> " + "<div class='text'> <p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
+
+      } else {
+        text = "<div class='textBlock left'> <div class='text'>  <p class='name'>" + msg.name + "</p>" + "<p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
+        
+      }
+
         break;
 
       case "rejectusername":
@@ -174,8 +181,8 @@ function connect() {
 
     // Se tiver algo na variável "text" é porque alguma mensagem de texto foi enviada
     if (text.length) {
-      chatFrameDocument.write(text);
-      document.getElementById("chatbox").contentWindow.scrollByPages(1);
+      chatFrameDocument.append(text);
+      $('#chatbox').animate({scrollTop: $('#chatbox').prop("scrollHeight")}, 500);
     }
   };
 }

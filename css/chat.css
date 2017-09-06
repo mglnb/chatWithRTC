@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,200,400,700');
 #local_video:not([src]) {
     display: none;
 }
 
 .shadow {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
 }
 
 input#login {
@@ -42,13 +44,71 @@ body {
     background: #FFFFFF;
     border-right: solid rgba(208, 208, 208, 0.50) 1px;
     border-left: solid rgba(208, 208, 208, 0.50) 1px;
+    height: calc(80vh - 94px);
 }
 
 #chatbox {
     width: 100%;
     border: none;
-    min-height: calc(80vh - 99px);
+
+    overflow-y: auto;
+    max-height: calc(80vh - 153px);
+    font-weight: 200;
+    padding-bottom: -94px;
 }
+
+#chatbox .textBlock.right{
+    padding: 5px;
+    font-size: 16px;
+    letter-spacing: 1.1px;
+    color: rgb(255,255,255);
+    text-align: right;
+}
+
+#chatbox .textBlock.right .text {
+    display: inline-block;
+    background: #36D1DC;
+    padding: 5px 15px;
+    border-radius: 15px;
+}
+#chatbox .textBlock p {
+    margin: 0;
+    padding: 0;
+}
+#chatbox .textBlock .time {
+    font-size: 9px;
+    font-family: sans-serif;
+}
+
+#chatbox .textBlock.left{
+    padding: 5px;
+    font-size: 16px;
+    letter-spacing: 1.1px;
+    color: rgb(255,255,255);
+    text-align: left;
+}
+
+#chatbox .textBlock.left .text {
+    background: #5B86E5;
+    padding: 5px 15px;
+    margin-top: 10px;
+    display: inline-block;    
+    border-radius: 15px;
+    position: relative;
+}
+#chatbox .textBlock.left .name {
+    font-size: 12px;
+    margin: 0;
+    position: absolute;
+    top: -15px;
+    left: 15px;
+    width: 100%;
+    color: #373737;
+    font-weight: 400;
+}
+
+
+
 
 #camera-container {
     display: block;
@@ -56,6 +116,7 @@ body {
     overflow: auto;
     background: #FFFFFF;
     min-height: calc(80vh - 94px);
+    border-bottom-right-radius: 2px;
 }
 
 .username {
@@ -64,6 +125,8 @@ body {
     border-bottom: solid rgba(208, 208, 208, 0.50) 1px;
     padding: 10px 0 0 0;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     text-align: center;
 }
 
@@ -85,16 +148,18 @@ body {
 }
 
 #hangup-button {
-    right: 20px;
+
     position: absolute;
-    top: 215px;
+    top: 270px;
     width: 50px;
     height: 50px;
     font-size: 20px;
     color: white;
     background: rgb(247, 34, 54);
-    border-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     border: none;
+    bottom: 0;
 }
 
 #hangup-button:disabled {
@@ -137,6 +202,8 @@ body {
     color: #BABABA;
     letter-spacing: 2px;
     padding: 0;
+    border-bottom-left-radius: 2px;
+    
 }
 
 #userlist-container p {
