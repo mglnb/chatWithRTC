@@ -29,7 +29,7 @@ NOTE: Chat de vídeo só funciona no firefox
 
 
 # Chat com Texto, vídeo e áudio
----
+
 Já que aprendemos o básico na primeira parte, vamos a algo um pouco avançado.
 Aprenderemos então a fazer uma sala de chat para multiplos usuários com possibilidade de um usuário fazer ligação de vídeo para outro usuário, isso tudo não apenas de browser pra browser, e sim conexão remota.
 
@@ -42,7 +42,7 @@ Mas para isso, teremos que utilizar mais uma tecnologia e suas dependencias:
 ###### Para melhor visualização dos arquivos que serão utilizados, clone este repositório.
 
 ## O Server 
----
+
 No arquivo server.js está todas configurações do server node.
 Para rodar ele, digite no seu prompt de comando. 
 
@@ -124,7 +124,7 @@ E então teremos o input para enviar mensagem ao chat que só será ativado apó
 ```
 
 ## O Javascript
----
+
 Então ao javascript. Para realizar essa conexão iremos ter o mesmo fluxo apresentado neste diagrama.  
 ![Flow](https://mdn.mozillademos.org/files/6119/webrtc-complete-diagram.png)  
 O qual o "Usuário A" enviará uma oferta ao server com os dados SDP e para quem seria a oferta.  
