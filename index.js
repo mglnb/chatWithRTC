@@ -146,7 +146,7 @@ function connect() {
         }
         if(Notification.permission === "granted") {
           var n = new Notification(msg.name, notification)
-          setTimeout(n.close.bind(n), 4000);
+
         }
       }
 
