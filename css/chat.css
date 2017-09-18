@@ -196,10 +196,11 @@ body {
 }
 
 #userlist-container {
-    min-height: 150px;
     background: #FFFFFF;
-    min-height: calc(80vh - 94px);
+    height: calc(80vh - 94px);
+    max-height: calc(80vh - 94px);
     color: #BABABA;
+    overflow-y: scroll;
     letter-spacing: 2px;
     padding: 0;
     border-bottom-left-radius: 2px;

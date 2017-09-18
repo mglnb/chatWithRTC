@@ -137,6 +137,9 @@ function connect() {
         break;
 
       case "message":
+        if (msg.text.trim() === "") {
+          break;
+        }
         if (myUsername == msg.name) {
           text = "<div class='textBlock right'> " + "<div class='text'> <p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
 
@@ -181,11 +184,11 @@ function connect() {
       case "hang-up": // Quando o usuário deseja desligar a conexão
         handleHangUpMsg(msg);
         break;
-
         // Caso receba uma mensagem desconhecida
       default:
         log_error("Mensagem desconhecida recebida:");
         log_error(msg);
+        
     }
 
     // Se tiver algo na variável "text" é porque alguma mensagem de texto foi enviada
