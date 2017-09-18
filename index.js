@@ -140,7 +140,14 @@ function connect() {
 
       } else {
         text = "<div class='textBlock left'> <div class='text'>  <p class='name'>" + msg.name + "</p>" + "<p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
-        
+        var notification = {
+          body: msg.text,
+          icon : 'http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/chat-2-icon.png'
+        }
+        if(Notification.permission === "granted") {
+          var n = new Notification(msg.name, notification)
+          setTimeout(n.close.bind(n), 4000);
+        }
       }
 
         break;
