@@ -145,7 +145,7 @@ function connect() {
           icon : 'http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/chat-2-icon.png'
         }
         if(Notification.permission === "granted") {
-          var n = new Notification(msg.name, notification)
+          new Notification(msg.name, notification)
 
         }
       }
