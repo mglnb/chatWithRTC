@@ -69,7 +69,9 @@ function sendToServer(msg) {
  */
 function setUsername() {
   myUsername = document.getElementById("name").value;
-
+  if (Notification.permission === "default") {
+    Notification.requestPermission();
+  }
   sendToServer({
     name: myUsername,
     date: Date.now(),
@@ -135,20 +137,20 @@ function connect() {
         break;
 
       case "message":
-      if(myUsername == msg.name) {
-        text = "<div class='textBlock right'> " + "<div class='text'> <p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
+        if (myUsername == msg.name) {
+          text = "<div class='textBlock right'> " + "<div class='text'> <p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
 
-      } else {
-        text = "<div class='textBlock left'> <div class='text'>  <p class='name'>" + msg.name + "</p>" + "<p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
-        var notification = {
-          body: msg.text,
-          icon : 'http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/chat-2-icon.png'
+        } else {
+          text = "<div class='textBlock left'> <div class='text'>  <p class='name'>" + msg.name + "</p>" + "<p>" + msg.text + "</p>" + "<p class='time'>" + timeStr + "</p></div> </div>";
+          var notification = {
+            body: msg.text,
+            icon: 'http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/chat-2-icon.png'
+          }
+          if (Notification.permission === "granted") {
+            new Notification(msg.name, notification)
+            
+          }
         }
-        if(Notification.permission === "granted") {
-          new Notification(msg.name, notification)
-
-        }
-      }
 
         break;
 
@@ -189,7 +191,9 @@ function connect() {
     // Se tiver algo na variável "text" é porque alguma mensagem de texto foi enviada
     if (text.length) {
       chatFrameDocument.append(text);
-      $('#chatbox').animate({scrollTop: $('#chatbox').prop("scrollHeight")}, 500);
+      $('#chatbox').animate({
+        scrollTop: $('#chatbox').prop("scrollHeight")
+      }, 500);
     }
   };
 }
